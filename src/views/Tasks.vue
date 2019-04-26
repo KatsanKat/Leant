@@ -3,6 +3,7 @@
     <div class="header-state-container">
       <div class="header-state">
         <h2 class="title">Objectifs</h2>
+        <button class="addTask" @click="add">+</button>
       </div>
     </div>
     <div class="task-state-container">
@@ -60,6 +61,33 @@
         </transition-group>
       </draggable>
     </div>
+    <div class="task-state-container">
+      <div class="task-state">
+        <div class="state-name">Terminée</div>
+        <div class="element">{{doneList.length}} éléments</div>
+      </div>
+      <draggable
+        class="content-state-container"
+        :list="doneList"
+        v-bind="dragOptions"
+        group="taskList"
+        @start="drag=true"
+        @end="drag=false"
+      >
+        <transition-group
+          class="list-group"
+          type="transition"
+          :name="!drag ? 'flip-list' : null">
+          <div v-for="task in doneList" :key="task.id" class="task">
+            <div class="task-dates">
+              <div class="final-date">{{task.plannedDate}}</div>
+              <div class="date-left">3 jours restants</div>
+            </div>
+            <div class="taskname">{{task.name}}</div>
+          </div>
+        </transition-group>
+      </draggable>
+    </div>
   </div>
 </template>
 
@@ -67,6 +95,7 @@
 import draggable from 'vuedraggable';
 
 export default {
+  name: 'Tasks',
   display: 'Transitions',
   components: {
     draggable,
@@ -95,6 +124,7 @@ export default {
         },
       ],
       doingList: [],
+      doneList: [],
     };
   },
   computed: {
@@ -105,6 +135,16 @@ export default {
         disabled: false,
         ghostClass: 'ghost',
       };
+    },
+  },
+  methods: {
+    async add() {
+      await this.waitingList.push({
+        id: 4,
+        name: 'Une nouvelle tâche',
+        plannedDate: '7 Mars 2019',
+        completionDate: '3 jours restants',
+      });
     },
   },
 };
@@ -125,6 +165,16 @@ export default {
       font-size: 20px;
       font-weight: 900;
       color: #000;
+    }
+    .addTask {
+      background-color: $green;
+      color: $white;
+      line-height: 1;
+      font-size: 20px;
+      border: none;
+      border-radius: 3px;
+      font-weight: 700;
+      outline: none;
     }
   }
 }
