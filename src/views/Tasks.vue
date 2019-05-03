@@ -91,7 +91,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import draggable from 'vuedraggable';
 
 export default {

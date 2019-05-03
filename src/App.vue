@@ -14,7 +14,7 @@
   </div>
 </template>
 
-<script lang="ts">
+<script lang="js">
 import { mapActions } from 'vuex';
 
 export default {
