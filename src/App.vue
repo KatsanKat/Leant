@@ -14,6 +14,19 @@
   </div>
 </template>
 
+<script lang="ts">
+import { mapActions } from 'vuex';
+
+export default {
+  created() {
+    this.setTasks();
+  },
+  methods: {
+    ...mapActions(['setTasks']),
+  },
+};
+</script>
+
 <style lang="scss">
 @import '~reset-css';
 * { box-sizing: border-box; }

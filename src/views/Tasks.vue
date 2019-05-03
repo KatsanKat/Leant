@@ -106,7 +106,7 @@ export default {
       waitingList: [
         {
           id: 1,
-          name: 'Déclarer ses revenues',
+          name: 'Déclarer ses revenus',
           plannedDate: '7 Mars 2019',
           completionDate: '3 jours restants',
         },
@@ -138,13 +138,8 @@ export default {
     },
   },
   methods: {
-    async add() {
-      await this.waitingList.push({
-        id: 4,
-        name: 'Une nouvelle tâche',
-        plannedDate: '7 Mars 2019',
-        completionDate: '3 jours restants',
-      });
+    add() {
+      // console.log(this.$store.state.tasks);
     },
   },
 };
