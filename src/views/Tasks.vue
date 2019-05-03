@@ -13,11 +13,11 @@
       </div>
       <draggable
         class="content-state-container"
-        :list="waitingList"
+        v-model="waitingList"
         v-bind="dragOptions"
         group="taskList"
         @start="drag=true"
-        @end="drag=false"
+        @end="drag=false;"
       >
         <transition-group
           class="list-group"
@@ -93,6 +93,7 @@
 
 <script lang="js">
 import draggable from 'vuedraggable';
+import { STATE_TASK } from '@/model/Task';
 
 export default {
   name: 'Tasks',
@@ -101,30 +102,12 @@ export default {
     draggable,
   },
   data() {
+    const tasks = this.$store.state.tasks
     return {
       drag: false,
-      waitingList: [
-        {
-          id: 1,
-          name: 'Déclarer ses revenus',
-          plannedDate: '7 Mars 2019',
-          completionDate: '3 jours restants',
-        },
-        {
-          id: 2,
-          name: 'Faire la vaisselle',
-          plannedDate: '7 Mars 2019',
-          completionDate: 'à définir',
-        },
-        {
-          id: 3,
-          name: 'Appeler un technicien',
-          plannedDate: '7 Mars 2019',
-          completionDate: '3 jours restants',
-        },
-      ],
-      doingList: [],
-      doneList: [],
+      waitingList: tasks.filter((task) => task.state === STATE_TASK.TODO),
+      doingList: tasks.filter((task) => task.state === STATE_TASK.DOING),
+      doneList: tasks.filter((task) => task.state === STATE_TASK.DONE),
     };
   },
   computed: {
@@ -136,6 +119,18 @@ export default {
         ghostClass: 'ghost',
       };
     },
+    allTasks(){
+      return this.$store.state.tasks;
+    },
+    // waitingList:{
+    //   get() {
+    //         return this.allTasks.filter((task) => task.state === STATE_TASK.TODO)
+    //     },
+    //   set(tasks) {
+    //     console.log(tasks);
+    //       // this.$store.commit('updateList', value)
+    //   }
+    // }
   },
   methods: {
     add() {

@@ -16,10 +16,11 @@
 
 <script lang="js">
 import { mapActions } from 'vuex';
+import leantStore from '@/store/local';
+import fakeTasks from '@/model/fake_tasks';
 
 export default {
   created() {
-    this.setTasks();
   },
   methods: {
     ...mapActions(['setTasks']),

@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
-import tasks from '@/model/tasks';
-import Task from "@/model/Task";
+import leantStore from '@/store/local';
 
 Vue.use(Vuex);
 
@@ -10,13 +9,21 @@ export default new Vuex.Store({
     tasks: []
   },
   mutations: {
-    setTasks (state, tasks) {
+    SET_TASKS (state, tasks) {
       state.tasks = tasks
+    },
+    ADD_TASK (state, task) {
+      state.tasks.push(task);
     }
   },
   actions: {
     setTasks ({ commit}, tasks) {
-      commit('setTasks', tasks)
+      commit('SET_TASKS', tasks);
+      leantStore.setItem('stored_tasks', tasks);
+    },
+    addTask ({ commit, state }, task) {
+      commit('ADD_TASK', tasks);
+      leantStore.setItem('stored_tasks', state.tasks);
     }
   },
 });
