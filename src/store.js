@@ -15,7 +15,7 @@ export default new Vuex.Store({
     }
   },
   actions: {
-    setTasks ({ commit}, tasks: Task[]) {
+    setTasks ({ commit}, tasks) {
       commit('setTasks', tasks)
     }
   },
