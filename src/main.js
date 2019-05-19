@@ -3,15 +3,16 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 import './registerServiceWorker';
-import leantStore from '@/store/local';
+import { leantStore } from './store/local';
 
 Vue.config.productionTip = false;
 
 leantStore.getItem('stored_tasks').then((tasks) => {
   if (tasks === null) {
-    store.dispatch('setTasks', [])
+    store.dispatch('setTasks', []);
   } else {
-    store.dispatch('setTasks', tasks)
+    store.dispatch('setTasks', tasks);
+    // console.log(store.getters.getTasksByStatus(1));
   }
 });
 

@@ -1,8 +1,8 @@
 export const STATE_TASK = {
-  TODO : 1,
-  DOING : 2,
-  DONE : 3
-}
+  TODO: 1,
+  DOING: 2,
+  DONE: 3,
+};
 
 class Task {
   constructor(id, name, plannedDate, completionDate, state) {

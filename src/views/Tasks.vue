@@ -1,9 +1,15 @@
 <template>
   <div id="states">
+    <newTaskModal
+      @new-created-task="newCreatedTask"
+      v-if="showModal"
+      @close="showModal=false"
+    >
+    </newTaskModal>
     <div class="header-state-container">
       <div class="header-state">
         <h2 class="title">Objectifs</h2>
-        <button class="addTask" @click="add">+</button>
+        <button class="addTask" @click="showModal = true">+</button>
       </div>
     </div>
     <div class="task-state-container">
@@ -17,7 +23,7 @@
         v-bind="dragOptions"
         group="taskList"
         @start="drag=true"
-        @end="drag=false;"
+        @end="drag=false"
       >
         <transition-group
           class="list-group"
@@ -94,21 +100,30 @@
 <script lang="js">
 import draggable from 'vuedraggable';
 import { STATE_TASK } from '@/model/Task';
+import newTaskModal from '@/components/newTaskModal.vue';
 
 export default {
   name: 'Tasks',
   display: 'Transitions',
   components: {
     draggable,
+    newTaskModal,
   },
   data() {
-    const tasks = this.$store.state.tasks
+    const { tasks } = this.$store.state;
     return {
       drag: false,
-      waitingList: tasks.filter((task) => task.state === STATE_TASK.TODO),
-      doingList: tasks.filter((task) => task.state === STATE_TASK.DOING),
-      doneList: tasks.filter((task) => task.state === STATE_TASK.DONE),
+      waitingList: tasks.filter(task => task.state === STATE_TASK.TODO),
+      doingList: tasks.filter(task => task.state === STATE_TASK.DOING),
+      doneList: tasks.filter(task => task.state === STATE_TASK.DONE),
+      showModal: false,
     };
+  },
+  methods: {
+    newCreatedTask(newTask) {
+      console.log('ça rentre', newTask);
+      this.waitingList.push(newTask);
+    },
   },
   computed: {
     dragOptions() {
@@ -119,9 +134,6 @@ export default {
         ghostClass: 'ghost',
       };
     },
-    allTasks(){
-      return this.$store.state.tasks;
-    },
     // waitingList:{
     //   get() {
     //         return this.allTasks.filter((task) => task.state === STATE_TASK.TODO)
@@ -131,11 +143,6 @@ export default {
     //       // this.$store.commit('updateList', value)
     //   }
     // }
-  },
-  methods: {
-    add() {
-      // console.log(this.$store.state.tasks);
-    },
   },
 };
 </script>

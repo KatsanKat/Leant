@@ -19,6 +19,6 @@ export default new Router({
       path: '/tasks',
       name: 'tasks',
       component: () => import('./views/Tasks.vue'),
-    }
+    },
   ],
 });
