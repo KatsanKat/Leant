@@ -10,14 +10,19 @@
   "dependencies": {
     "core-js": "^2.6.5",
     "localforage": "^1.7.3",
+    "luxon": "^1.15.0",
+    "moment": "^2.24.0",
     "register-service-worker": "^1.6.2",
     "reset-css": "^4.0.1",
     "vue": "^2.6.6",
     "vue-class-component": "^6.0.0",
+    "vue-datetime": "^1.0.0-beta.10",
+    "vue-moment": "^4.0.0",
     "vue-property-decorator": "^8.0.0",
     "vue-router": "^3.0.1",
     "vuedraggable": "^2.20.0",
-    "vuex": "^3.0.1"
+    "vuex": "^3.0.1",
+    "weekstart": "^1.0.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.5.0",

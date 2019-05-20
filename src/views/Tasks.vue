@@ -31,8 +31,8 @@
           :name="!drag ? 'flip-list' : null">
           <div v-for="task in waitingList" :key="task.id" class="task">
             <div class="task-dates">
-              <div class="final-date">{{task.plannedDate}}</div>
-              <div class="date-left">3 jours restants</div>
+              <div class="final-date">{{task.plannedDate | moment("DD/MM/YYYY")}}</div>
+              <div class="date-left">{{task.plannedDate | moment("from")}}</div>
             </div>
             <div class="taskname">{{task.name}}</div>
           </div>
@@ -121,7 +121,6 @@ export default {
   },
   methods: {
     newCreatedTask(newTask) {
-      console.log('ça rentre', newTask);
       this.waitingList.push(newTask);
     },
   },

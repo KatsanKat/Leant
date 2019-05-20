@@ -12,6 +12,7 @@
 
           <div class="modal-body">
             <slot name="body">
+              <datetime type="datetime" placeholder="Choisir une date" v-model="datetime"></datetime>
               <label for="name">Nom</label>
               <input
                 v-model="name"
@@ -22,7 +23,6 @@
               <p>{{ name }}</p>
             </slot>
           </div>
-
           <div class="modal-footer">
             <slot name="footer">
               <button class="modal-default-button" @click="$emit('close'); add();">
@@ -38,20 +38,26 @@
 
 <script lang="js">
 import Task, { STATE_TASK } from '@/model/Task';
+import { Datetime } from 'vue-datetime';
+import 'vue-datetime/dist/vue-datetime.css';
 
 export default {
   name: 'newTaskModal',
   data() {
     return {
       name: '',
+      datetime: '',
     };
   },
   methods: {
     add() {
-      const newTask = new Task(2, this.name, '2019-08-08', '', STATE_TASK.TODO);
+      const newTask = new Task(2, this.name, this.datetime, '', STATE_TASK.TODO);
       this.$store.dispatch('addTask', newTask);
       this.$emit('new-created-task', newTask);
     },
+  },
+  components: {
+    datetime: Datetime,
   },
 };
 </script>
