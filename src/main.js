@@ -1,4 +1,6 @@
 import Vue from 'vue';
+import VuejsDialog from 'vuejs-dialog';
+import 'vuejs-dialog/dist/vuejs-dialog.min.css';
 import moment from 'moment';
 import VueMoment from 'vue-moment';
 import App from './App.vue';
@@ -10,6 +12,7 @@ import { leantStore } from './store/local';
 Vue.use(VueMoment, {
   moment,
 });
+Vue.use(VuejsDialog);
 
 moment.updateLocale('fr', {
   relativeTime: {

@@ -6,27 +6,37 @@
 
           <div class="modal-header">
             <slot name="header">
-              Nouvel objectif !
+              <h1>Nouvel objectif !</h1>
             </slot>
           </div>
 
           <div class="modal-body">
             <slot name="body">
-              <datetime type="datetime" placeholder="Choisir une date" v-model="datetime"></datetime>
-              <label for="name">Nom</label>
-              <input
-                v-model="name"
-                id="name"
-                type="text"
-                name="name"
-                placeholder="Refaire le monde...">
-              <p>{{ name }}</p>
+              <div class="form-input">
+                <label for="name">Nom</label>
+                <input
+                  v-model="name"
+                  id="name"
+                  type="text"
+                  name="name"
+                  placeholder="Refaire le monde...">
+              </div>
+              <div class="form-input">
+                <label for="datetime">Date</label>
+                <datetime
+                  v-model="datetime"
+                  id="datetime"
+                  type="datetime"
+                  name="datetime"
+                  placeholder="Choisir une date"
+                ></datetime>
+              </div>
             </slot>
           </div>
           <div class="modal-footer">
             <slot name="footer">
               <button class="modal-default-button" @click="$emit('close'); add();">
-                OK
+                🎉 C'est parti ! 🎉
               </button>
             </slot>
           </div>
@@ -63,6 +73,7 @@ export default {
 </script>
 
 <style lang="scss">
+  .form-input {margin-bottom: 25px;}
   label {
     width: 100%;
     font-size: 13px;
@@ -81,8 +92,6 @@ export default {
       transition: border-color .3s ease-in;
     }
   }
-
-
   .modal-mask {
     position: fixed;
     z-index: 9998;
@@ -94,12 +103,10 @@ export default {
     display: table;
     transition: opacity .3s ease;
   }
-
   .modal-wrapper {
     display: table-cell;
     vertical-align: middle;
   }
-
   .modal-container {
     width: 300px;
     margin: 0px auto;
@@ -110,18 +117,22 @@ export default {
     transition: all .3s ease;
     font-family: Helvetica, Arial, sans-serif;
   }
-
   .modal-header h3 {
     margin-top: 0;
     color: #42b983;
   }
-
   .modal-body {
     margin: 20px 0;
   }
-
   .modal-default-button {
-    float: right;
+    color: $white;
+    font-size: 20px;
+    text-align: center;
+    width: 100%;
+    background-color: #42b983;
+    border: none;
+    padding: 15px 0;
+    font-weight: 700;
   }
 
   /*
@@ -137,11 +148,9 @@ export default {
     opacity: 0;
     transition: opacity .3s ease;
   }
-
   .modal-leave-active {
     opacity: 0;
   }
-
   .modal-enter .modal-container,
   .modal-leave-active .modal-container {
     -webkit-transform: scale(1.1);

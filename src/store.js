@@ -16,6 +16,13 @@ export default new Vuex.Store({
     ADD_TASK(state, task) {
       state.tasks.push(task);
     },
+    UPDATE_TASK(state, { task, getters }) {
+      state.tasks.map((taskItem) => {
+        if (taskItem.id === getters.getTaskById(task.id)) {
+          return taskItem = task;
+        }
+      });
+    },
   },
   actions: {
     setTasks({ commit }, tasks) {
@@ -24,6 +31,11 @@ export default new Vuex.Store({
     },
     addTask({ commit, state }, task) {
       commit('ADD_TASK', task);
+      leantStore.setItem('stored_tasks', state.tasks);
+    },
+    updateTask({ commit, getters, state }, task) {
+      console.log(task);
+      commit('UPDATE_TASK', { task, getters });
       leantStore.setItem('stored_tasks', state.tasks);
     },
   },

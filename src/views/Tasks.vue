@@ -4,8 +4,7 @@
       @new-created-task="newCreatedTask"
       v-if="showModal"
       @close="showModal=false"
-    >
-    </newTaskModal>
+    ></newTaskModal>
     <div class="header-state-container">
       <div class="header-state">
         <h2 class="title">Objectifs</h2>
@@ -18,6 +17,7 @@
         <div class="element">{{waitingList.length}} éléments</div>
       </div>
       <draggable
+        :move="confirmTask"
         class="content-state-container"
         v-model="waitingList"
         v-bind="dragOptions"
@@ -59,8 +59,8 @@
         >
           <div v-for="task in doingList" :key="task.id" class="task">
             <div class="task-dates">
-              <div class="final-date">{{task.plannedDate}}</div>
-              <div class="date-left">3 jours restants</div>
+              <div class="final-date">{{task.plannedDate | moment("DD/MM/YYYY")}}</div>
+              <div class="date-left">{{task.plannedDate | moment("from")}}</div>
             </div>
             <div class="taskname">{{task.name}}</div>
           </div>
@@ -86,8 +86,8 @@
           :name="!drag ? 'flip-list' : null">
           <div v-for="task in doneList" :key="task.id" class="task">
             <div class="task-dates">
-              <div class="final-date">{{task.plannedDate}}</div>
-              <div class="date-left">3 jours restants</div>
+              <div class="final-date">{{task.plannedDate | moment("DD/MM/YYYY")}}</div>
+              <div class="date-left"><span class="green">Terminé !</span></div>
             </div>
             <div class="taskname">{{task.name}}</div>
           </div>
@@ -112,16 +112,33 @@ export default {
   data() {
     const { tasks } = this.$store.state;
     return {
-      drag: false,
       waitingList: tasks.filter(task => task.state === STATE_TASK.TODO),
       doingList: tasks.filter(task => task.state === STATE_TASK.DOING),
       doneList: tasks.filter(task => task.state === STATE_TASK.DONE),
       showModal: false,
+      drag: false,
+      confirmTaskMessage: 'Une fois cet objectif en cours il sera impossible de le modifier, prêt à relever le défi ?',
     };
   },
   methods: {
     newCreatedTask(newTask) {
       this.waitingList.push(newTask);
+    },
+    confirmTask(evt) {
+      this.confirmDialog(evt.draggedContext.element);
+    },
+    confirmDialog(taskDragged) {
+      this.$dialog.confirm(this.confirmTaskMessage)
+        .then(() => {
+          const taskDoing = taskDragged;
+          taskDoing.state = STATE_TASK.DOING
+          this.$store.dispatch('updateTask', taskDragged, taskDoing.id);
+        })
+        .catch((err) => {
+          console.log(err);
+          this.waitingList.push(taskDragged);
+          this.doingList.pop();
+        });
     },
   },
   computed: {
@@ -192,6 +209,10 @@ export default {
     align-items: center;
     font-size: 12px;
     margin-bottom: 8px;
+    .green {
+      color: #42b983;
+      font-weight: 700;
+    }
   }
 }
 .list-group {
