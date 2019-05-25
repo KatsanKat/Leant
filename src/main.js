@@ -40,7 +40,6 @@ leantStore.getItem('stored_tasks').then((tasks) => {
     store.dispatch('setTasks', []);
   } else {
     store.dispatch('setTasks', tasks);
-    // console.log(store.getters.getTasksByStatus(1));
   }
 });
 

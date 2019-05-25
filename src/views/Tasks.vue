@@ -131,7 +131,7 @@ export default {
       this.$dialog.confirm(this.confirmTaskMessage)
         .then(() => {
           const taskDoing = taskDragged;
-          taskDoing.state = STATE_TASK.DOING
+          taskDoing.state = STATE_TASK.DOING;
           this.$store.dispatch('updateTask', taskDragged, taskDoing.id);
         })
         .catch((err) => {

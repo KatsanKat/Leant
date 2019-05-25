@@ -34,21 +34,14 @@ export default new Vuex.Store({
       leantStore.setItem('stored_tasks', state.tasks);
     },
     updateTask({ commit, getters, state }, task) {
-      console.log(task);
       commit('UPDATE_TASK', { task, getters });
       leantStore.setItem('stored_tasks', state.tasks);
     },
   },
   getters: {
-    getTasks: (state) => {
-      return state.tasks;
-    },
-    getTaskById: state => (id) => {
-      return state.tasks.find(task => task.id === id);
-    },
-    getTasksByStatus: state => (status) => {
-      return state.tasks.filter(task => task.state === status);
-    },
+    getTasks: state => state.tasks,
+    getTaskById: state => id => state.tasks.find(task => task.id === id),
+    getTasksByStatus: state => status => state.tasks.filter(task => task.state === status),
   },
 });
 

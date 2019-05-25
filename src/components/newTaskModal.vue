@@ -57,13 +57,22 @@ export default {
     return {
       name: '',
       datetime: '',
+      nextId: this.getNextId(),
     };
   },
   methods: {
     add() {
-      const newTask = new Task(2, this.name, this.datetime, '', STATE_TASK.TODO);
+      const newTask = new Task(this.nextId, this.name, this.datetime, '', STATE_TASK.TODO);
       this.$store.dispatch('addTask', newTask);
       this.$emit('new-created-task', newTask);
+    },
+    getNextId() {
+      const tasks = this.$store.getters.getTasks;
+      if (tasks.length === 0) { return 1; }
+      const taskArray = [];
+      tasks.map((task) => { taskArray.push(task.id); });
+      const highestId = Math.max(...taskArray);
+      return highestId + 1;
     },
   },
   components: {
