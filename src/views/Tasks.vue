@@ -2,13 +2,13 @@
   <div id="states">
     <newTaskModal
       @new-created-task="newCreatedTask"
-      v-if="showModal"
-      @close="showModal=false"
+      v-if="showModalAdd"
+      @close="showModalAdd=false"
     ></newTaskModal>
     <div class="header-state-container">
       <div class="header-state">
         <h2 class="title">Objectifs</h2>
-        <button class="addTask" @click="showModal = true">+</button>
+        <button class="addTask" @click="showModalAdd = true">+</button>
       </div>
     </div>
     <div class="task-state-container">
@@ -18,6 +18,7 @@
       </div>
       <draggable
         :move="confirmTask"
+        :disabled="showModalEdit"
         class="content-state-container"
         v-model="waitingList"
         v-bind="dragOptions"
@@ -29,8 +30,17 @@
           class="list-group"
           type="transition"
           :name="!drag ? 'flip-list' : null">
-          <div v-for="task in waitingList" :key="task.id" class="task">
+          <div
+            v-for="task in waitingList"
+            :key="task.id"
+            class="task"
+            @click="showModalEdit=true">
             <div class="task-dates">
+              <editTaskModal
+                :task="task"
+                v-if="showModalEdit"
+                @close="showModalEdit=false"
+              ></editTaskModal>
               <div class="final-date">{{task.plannedDate | moment("DD/MM/YYYY")}}</div>
               <div class="date-left">{{task.plannedDate | moment("from")}}</div>
             </div>
@@ -101,6 +111,7 @@
 import draggable from 'vuedraggable';
 import { STATE_TASK } from '@/model/Task';
 import newTaskModal from '@/components/newTaskModal.vue';
+import editTaskModal from '@/components/editTaskModal.vue';
 
 export default {
   name: 'Tasks',
@@ -108,6 +119,7 @@ export default {
   components: {
     draggable,
     newTaskModal,
+    editTaskModal,
   },
   data() {
     const { tasks } = this.$store.state;
@@ -115,7 +127,8 @@ export default {
       waitingList: tasks.filter(task => task.state === STATE_TASK.TODO),
       doingList: tasks.filter(task => task.state === STATE_TASK.DOING),
       doneList: tasks.filter(task => task.state === STATE_TASK.DONE),
-      showModal: false,
+      showModalAdd: false,
+      showModalEdit: false,
       drag: false,
       confirmTaskMessage: 'Une fois cet objectif en cours il sera impossible de le modifier, prêt à relever le défi ?',
     };
@@ -156,7 +169,7 @@ export default {
     //     },
     //   set(tasks) {
     //     console.log(tasks);
-    //       // this.$store.commit('updateList', value)
+    //       // this.$store.commit('updateList', task)
     //   }
     // }
   },

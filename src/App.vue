@@ -6,8 +6,7 @@
       </div>
     </header>
     <div id="nav">
-      <router-link to="/">Stats</router-link>
-      <router-link to="/tasks">Objectifs</router-link>
+      <router-link to="/">Objectifs</router-link>
       <router-link to="/about">Settings</router-link>
     </div>
     <router-view/>
@@ -16,8 +15,6 @@
 
 <script lang="js">
 import { mapActions } from 'vuex';
-import leantStore from '@/store/local';
-import fakeTasks from '@/model/fake_tasks';
 
 export default {
   created() {

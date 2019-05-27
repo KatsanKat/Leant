@@ -16,7 +16,7 @@ export default new Router({
       component: () => import(/* webpackChunkName: "about" */ './views/About.vue'),
     },
     {
-      path: '/tasks',
+      path: '/',
       name: 'tasks',
       component: () => import('./views/Tasks.vue'),
     },
