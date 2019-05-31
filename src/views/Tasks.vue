@@ -59,13 +59,14 @@
           type="transition"
           :name="!drag ? 'flip-list' : null"
         >
-          <div v-for="task in doingList" :key="task.id" class="task">
-            <div class="task-dates">
-              <div class="final-date">{{task.plannedDate | moment("DD/MM/YYYY")}}</div>
-              <div class="date-left">{{task.plannedDate | moment("from")}}</div>
-            </div>
-            <div class="taskname">{{task.name}}</div>
-          </div>
+          <doingTask
+            v-for="task in doingList"
+            :task="task"
+            :key="task.id"
+            @delete-doing-task="deleteDoingTask"
+            @is-modal-open="changeModalOpen"
+            class="task">
+          </doingTask>
         </transition-group>
       </draggable>
     </div>
@@ -104,6 +105,7 @@ import draggable from 'vuedraggable';
 import { STATE_TASK } from '@/model/Task';
 import newTaskModal from '@/components/newTaskModal.vue';
 import waitingTask from '@/components/waitingTask.vue';
+import doingTask from '@/components/doingTask.vue';
 
 export default {
   name: 'Tasks',
@@ -112,6 +114,7 @@ export default {
     waitingTask,
     draggable,
     newTaskModal,
+    doingTask,
   },
   data() {
     const { tasks } = this.$store.state;
@@ -133,15 +136,22 @@ export default {
       this.waitingList.push(newTask);
     },
     deleteWaitingTask(deletedTask) {
-      console.log(deletedTask);
       this.waitingList.map((task, index) => {
         if (task === deletedTask) {
           this.waitingList.splice(index, 1);
         }
       });
     },
+    deleteDoingTask(deletedTask) {
+      this.doingList.map((task, index) => {
+        if (task === deletedTask) {
+          this.doingList.splice(index, 1);
+        }
+      });
+    },
     confirmTask(evt) {
       if (evt.relatedContext.list === this.doingList) {
+        this.drag = false;
         this.confirmDialog(evt.draggedContext.element);
       }
     },
