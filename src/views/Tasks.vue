@@ -18,9 +18,9 @@
       </div>
       <draggable
         :move="confirmTask"
-        :disabled="showModalEdit"
+        :disabled="isModalOpen"
+        :list="waitingList"
         class="content-state-container"
-        v-model="waitingList"
         v-bind="dragOptions"
         group="taskList"
         @start="drag=true"
@@ -30,22 +30,14 @@
           class="list-group"
           type="transition"
           :name="!drag ? 'flip-list' : null">
-          <div
+          <waitingTask
             v-for="task in waitingList"
+            :task="task"
             :key="task.id"
-            class="task"
-            @click="showModalEdit=true">
-            <div class="task-dates">
-              <editTaskModal
-                :task="task"
-                v-if="showModalEdit"
-                @close="showModalEdit=false"
-              ></editTaskModal>
-              <div class="final-date">{{task.plannedDate | moment("DD/MM/YYYY")}}</div>
-              <div class="date-left">{{task.plannedDate | moment("from")}}</div>
-            </div>
-            <div class="taskname">{{task.name}}</div>
-          </div>
+            @delete-waiting-task="deleteWaitingTask"
+            @is-modal-open="changeModalOpen"
+            class="task">
+          </waitingTask>
         </transition-group>
       </draggable>
     </div>
@@ -111,15 +103,15 @@
 import draggable from 'vuedraggable';
 import { STATE_TASK } from '@/model/Task';
 import newTaskModal from '@/components/newTaskModal.vue';
-import editTaskModal from '@/components/editTaskModal.vue';
+import waitingTask from '@/components/waitingTask.vue';
 
 export default {
   name: 'Tasks',
   display: 'Transitions',
   components: {
+    waitingTask,
     draggable,
     newTaskModal,
-    editTaskModal,
   },
   data() {
     const { tasks } = this.$store.state;
@@ -128,17 +120,30 @@ export default {
       doingList: tasks.filter(task => task.state === STATE_TASK.DOING),
       doneList: tasks.filter(task => task.state === STATE_TASK.DONE),
       showModalAdd: false,
-      showModalEdit: false,
+      isModalOpen: false,
       drag: false,
       confirmTaskMessage: 'Une fois cet objectif en cours il sera impossible de le modifier, prêt à relever le défi ?',
     };
   },
   methods: {
+    changeModalOpen(bool) {
+      this.isModalOpen = bool;
+    },
     newCreatedTask(newTask) {
       this.waitingList.push(newTask);
     },
+    deleteWaitingTask(deletedTask) {
+      console.log(deletedTask);
+      this.waitingList.map((task, index) => {
+        if (task === deletedTask) {
+          this.waitingList.splice(index, 1);
+        }
+      });
+    },
     confirmTask(evt) {
-      this.confirmDialog(evt.draggedContext.element);
+      if (evt.relatedContext.list === this.doingList) {
+        this.confirmDialog(evt.draggedContext.element);
+      }
     },
     confirmDialog(taskDragged) {
       this.$dialog.confirm(this.confirmTaskMessage)

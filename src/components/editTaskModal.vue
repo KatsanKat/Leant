@@ -38,6 +38,9 @@
               <button class="modal-default-button" @click.stop="$emit('close'); edit()">
                 🎉 C'est reparti ! 🎉
               </button>
+              <button class="modal-default-button danger" @click="confirmDelete(task)">
+                Supprimer
+              </button>
             </slot>
           </div>
         </div>
@@ -57,6 +60,7 @@ export default {
     return {
       name: '',
       datetime: '',
+      confirmDeleteMessage: 'Supprimer l\'objectif ?',
     };
   },
   props: {
@@ -66,7 +70,17 @@ export default {
     edit() {
       const updatedTask = new Task(this.task.id, this.name, this.datetime, '', STATE_TASK.TODO);
       this.$store.dispatch('updateTask', updatedTask);
-      this.$emit('updated-task', updatedTask);
+    },
+    confirmDelete() {
+      this.$dialog.confirm(this.confirmDeleteMessage)
+        .then(() => {
+          this.$emit('delete-waiting-task', this.task);
+          this.$emit('close');
+          this.$store.dispatch('deleteTask', this.task);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     },
   },
   components: {
@@ -97,7 +111,7 @@ export default {
   }
   .modal-mask {
     position: fixed;
-    z-index: 9998;
+    z-index: 4000;
     top: 0;
     left: 0;
     width: 100%;
@@ -136,6 +150,10 @@ export default {
     border: none;
     padding: 15px 0;
     font-weight: 700;
+    margin-top: 15px;
+    &.danger {
+      background-color: #f74e4e;
+    }
   }
 
   /*

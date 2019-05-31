@@ -19,7 +19,15 @@ export default new Vuex.Store({
     UPDATE_TASK(state, { task, getters }) {
       state.tasks.map((taskItem) => {
         if (taskItem.id === getters.getTaskById(task.id)) {
-          return taskItem = task;
+          taskItem = task;
+        }
+      });
+    },
+    DELETE_TASK(state, { task, getters }) {
+      console.log('deletedTask', task);
+      state.tasks.map((taskItem, index) => {
+        if (taskItem === getters.getTaskById(task.id)) {
+          state.tasks.splice(index, 1);
         }
       });
     },
@@ -37,6 +45,10 @@ export default new Vuex.Store({
       commit('UPDATE_TASK', { task, getters });
       leantStore.setItem('stored_tasks', state.tasks);
     },
+    deleteTask({ commit, getters, state }, task) {
+      commit('DELETE_TASK', { task, getters });
+      leantStore.setItem('stored_tasks', state.tasks);
+    },
   },
   getters: {
     getTasks: state => state.tasks,
@@ -44,7 +56,3 @@ export default new Vuex.Store({
     getTasksByStatus: state => status => state.tasks.filter(task => task.state === status),
   },
 });
-
-function getById() {
-
-}
