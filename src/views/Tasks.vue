@@ -47,8 +47,9 @@
         <div class="element">{{doingList.length}} éléments</div>
       </div>
       <draggable
-        class="content-state-container"
+        :move="finishTask"
         :list="doingList"
+        class="content-state-container"
         v-bind="dragOptions"
         group="taskList"
         @start="drag=true"
@@ -126,6 +127,7 @@ export default {
       isModalOpen: false,
       drag: false,
       confirmTaskMessage: 'Une fois cet objectif en cours il sera impossible de le modifier, prêt à relever le défi ?',
+      finishTaskMessage: 'Objectif terminé ?',
     };
   },
   methods: {
@@ -166,6 +168,25 @@ export default {
           console.log(err);
           this.waitingList.push(taskDragged);
           this.doingList.pop();
+        });
+    },
+    finishTask(evt) {
+      if (evt.relatedContext.list === this.doneList) {
+        this.drag = false;
+        this.finishDialog(evt.draggedContext.element);
+      }
+    },
+    finishDialog(taskDragged) {
+      this.$dialog.confirm(this.finishTaskMessage)
+        .then(() => {
+          const taskDone = taskDragged;
+          taskDone.state = STATE_TASK.DONE;
+          this.$store.dispatch('updateTask', taskDragged, taskDone.id);
+        })
+        .catch((err) => {
+          console.log(err);
+          this.doingList.push(taskDragged);
+          this.doneList.pop();
         });
     },
   },

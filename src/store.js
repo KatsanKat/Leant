@@ -1,7 +1,6 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 import { leantStore } from './store/local';
-// import tasks from './model/fake_tasks';
 
 Vue.use(Vuex);
 
