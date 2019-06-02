@@ -107,6 +107,7 @@ import { STATE_TASK } from '@/model/Task';
 import newTaskModal from '@/components/newTaskModal.vue';
 import waitingTask from '@/components/waitingTask.vue';
 import doingTask from '@/components/doingTask.vue';
+import moment from 'moment';
 
 export default {
   name: 'Tasks',
@@ -116,6 +117,7 @@ export default {
     draggable,
     newTaskModal,
     doingTask,
+    // moment,
   },
   data() {
     const { tasks } = this.$store.state;
@@ -136,6 +138,9 @@ export default {
     },
     newCreatedTask(newTask) {
       this.waitingList.push(newTask);
+    },
+    moment() {
+      return moment();
     },
     deleteWaitingTask(deletedTask) {
       this.waitingList.map((task, index) => {
@@ -166,8 +171,12 @@ export default {
         })
         .catch((err) => {
           console.log(err);
+          this.doingList.map((task, index) => {
+            if (task === taskDragged) {
+              this.doingList.splice(index, 1);
+            }
+          });
           this.waitingList.push(taskDragged);
-          this.doingList.pop();
         });
     },
     finishTask(evt) {
@@ -181,12 +190,18 @@ export default {
         .then(() => {
           const taskDone = taskDragged;
           taskDone.state = STATE_TASK.DONE;
+          taskDone.completionDate = moment().format();
           this.$store.dispatch('updateTask', taskDragged, taskDone.id);
         })
         .catch((err) => {
           console.log(err);
+          this.doneList.map((task, index) => {
+            if (task === taskDragged) {
+              this.doneList.splice(index, 1);
+            }
+          });
           this.doingList.push(taskDragged);
-          this.doneList.pop();
+          console.log(this.doneList);
         });
     },
   },

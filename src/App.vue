@@ -7,7 +7,7 @@
     </header>
     <div id="nav">
       <router-link to="/">Objectifs</router-link>
-      <router-link to="/about">Settings</router-link>
+      <router-link to="/about">Expérience</router-link>
     </div>
     <router-view/>
   </div>
