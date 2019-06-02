@@ -7,7 +7,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     tasks: [],
-
+    experience: {},
   },
   mutations: {
     SET_TASKS(state, tasks) {
@@ -24,12 +24,17 @@ export default new Vuex.Store({
       });
     },
     DELETE_TASK(state, { task, getters }) {
-      console.log('deletedTask', task);
       state.tasks.map((taskItem, index) => {
         if (taskItem === getters.getTaskById(task.id)) {
           state.tasks.splice(index, 1);
         }
       });
+    },
+    SET_EXPERIENCE(state, experience) {
+      state.experience = experience;
+    },
+    UPDATE_EXPERIENCE(state, { experience }) {
+      state.experience = experience;
     },
   },
   actions: {
@@ -48,6 +53,14 @@ export default new Vuex.Store({
     deleteTask({ commit, getters, state }, task) {
       commit('DELETE_TASK', { task, getters });
       leantStore.setItem('stored_tasks', state.tasks);
+    },
+    setExperience({ commit }, experience) {
+      commit('SET_EXPERIENCE', experience);
+      leantStore.setItem('stored_xp', experience);
+    },
+    updateExperience({ commit }, experience) {
+      commit('UPDATE_EXPERIENCE', experience);
+      leantStore.setItem('stored_xp', experience);
     },
   },
   getters: {

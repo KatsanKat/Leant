@@ -120,11 +120,12 @@ export default {
     // moment,
   },
   data() {
-    const { tasks } = this.$store.state;
+    const { tasks, experience } = this.$store.state;
     return {
       waitingList: tasks.filter(task => task.state === STATE_TASK.TODO),
       doingList: tasks.filter(task => task.state === STATE_TASK.DOING),
       doneList: tasks.filter(task => task.state === STATE_TASK.DONE),
+      xp: experience,
       showModalAdd: false,
       isModalOpen: false,
       drag: false,
@@ -155,6 +156,8 @@ export default {
           this.doingList.splice(index, 1);
         }
       });
+      this.xp.number -= 50;
+      this.$store.dispatch('updateExperience', this.xp);
     },
     confirmTask(evt) {
       if (evt.relatedContext.list === this.doingList) {
@@ -191,6 +194,8 @@ export default {
           const taskDone = taskDragged;
           taskDone.state = STATE_TASK.DONE;
           taskDone.completionDate = moment().format();
+          this.xp.number += 100;
+          this.$store.dispatch('updateExperience', this.xp);
           this.$store.dispatch('updateTask', taskDragged, taskDone.id);
         })
         .catch((err) => {
@@ -201,7 +206,6 @@ export default {
             }
           });
           this.doingList.push(taskDragged);
-          console.log(this.doneList);
         });
     },
   },

@@ -3,6 +3,7 @@ import VuejsDialog from 'vuejs-dialog';
 import 'vuejs-dialog/dist/vuejs-dialog.min.css';
 import moment from 'moment';
 import VueMoment from 'vue-moment';
+import Experience from './model/Experience';
 import App from './App.vue';
 import router from './router';
 import store from './store';
@@ -42,7 +43,13 @@ leantStore.getItem('stored_tasks').then((tasks) => {
     store.dispatch('setTasks', tasks);
   }
 });
-
+leantStore.getItem('stored_xp').then((experience) => {
+  if (experience === null) {
+    store.dispatch('setExperience', new Experience(0, 1));
+  } else {
+    store.dispatch('setExperience', experience);
+  }
+});
 
 new Vue({
   router,

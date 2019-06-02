@@ -34,7 +34,6 @@ export default {
   },
   methods: {
     deleteDoingTask() {
-      console.log(this.task);
       this.$emit('delete-doing-task', this.task);
       this.$store.dispatch('deleteTask', this.task);
     },
