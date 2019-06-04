@@ -8,6 +8,7 @@ export default new Vuex.Store({
   state: {
     tasks: [],
     experience: {},
+    new_user: Boolean,
   },
   mutations: {
     SET_TASKS(state, tasks) {
@@ -36,6 +37,9 @@ export default new Vuex.Store({
     UPDATE_EXPERIENCE(state, { experience }) {
       state.experience = experience;
     },
+    SET_NEW_USER(state, { isNew }) {
+      state.new_user = isNew;
+    },
   },
   actions: {
     setTasks({ commit }, tasks) {
@@ -61,6 +65,10 @@ export default new Vuex.Store({
     updateExperience({ commit }, experience) {
       commit('UPDATE_EXPERIENCE', experience);
       leantStore.setItem('stored_xp', experience);
+    },
+    setNewUser({ commit }, isNew) {
+      commit('SET_NEW_USER', isNew);
+      leantStore.setItem('new_user', isNew);
     },
   },
   getters: {

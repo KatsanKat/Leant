@@ -50,6 +50,14 @@ leantStore.getItem('stored_xp').then((experience) => {
     store.dispatch('setExperience', experience);
   }
 });
+leantStore.getItem('new_user').then((user) => {
+  if (user === null) {
+    store.dispatch('setNewUser', true);
+  } else {
+    console.log('not new', user);
+    store.dispatch('setNewUser', false);
+  }
+});
 
 new Vue({
   router,

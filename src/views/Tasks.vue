@@ -117,7 +117,6 @@ export default {
     draggable,
     newTaskModal,
     doingTask,
-    // moment,
   },
   data() {
     const { tasks, experience } = this.$store.state;
