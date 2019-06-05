@@ -8,11 +8,16 @@
       @close="showModalEdit=false; $emit('is-modal-open', showModalEdit)"
       @delete-waiting-task="deleteWaitingTask"
     ></editTaskModal>
+    <div class="dotted-container">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="task-name">{{task.name}}</div>
     <div class="task-dates">
       <div class="final-date">{{task.plannedDate | moment("DD/MM/YYYY")}}</div>
       <div class="date-left">{{task.plannedDate | moment("from")}}</div>
     </div>
-    <div class="taskname">{{task.name}}</div>
   </div>
 </template>
 
@@ -40,6 +45,8 @@ export default {
 };
 </script>
 
-<style scoped>
-
+<style lang="scss">
+.waiting-task {
+  background-color: #B9B3F7;
+}
 </style>

@@ -36,9 +36,9 @@
           <div class="modal-footer">
             <slot name="footer">
               <button class="modal-default-button" @click.stop="$emit('close'); edit()">
-                🎉 C'est reparti ! 🎉
+                Modifier
               </button>
-              <button class="modal-default-button danger" @click="confirmDelete(task)">
+              <button class="modal-default-button dissmiss" @click="confirmDelete(task)">
                 Supprimer
               </button>
             </slot>
@@ -89,72 +89,17 @@ export default {
 };
 </script>
 
-<style lang="scss">
-  .form-input {margin-bottom: 25px;}
-  label {
-    width: 100%;
-    font-size: 13px;
-    color: $second;
-  }
-  input[type="text"] {
-    width: 100%;
-    outline: none;
-    border: none;
-    border-bottom: 1px solid $second;
-    transition: border-color .3s ease-out;
-    padding: 5px 0;
-    font-size: 15px;
-    &:focus {
-      border-bottom-color: $black;
-      transition: border-color .3s ease-in;
+<style scoped lang="scss">
+  .modal-mask .modal-wrapper .modal-container .modal-default-button {
+    background-color: #9890E3;
+    border: 2px solid #B9B2F4;
+    &.dissmiss {
+      margin-top: 0;
+      background-color: transparent;
+      color: #9890E3;
+      border: none;
     }
-  }
-  .modal-mask {
-    position: fixed;
-    z-index: 4000;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, .5);
-    display: table;
-    transition: opacity .3s ease;
-  }
-  .modal-wrapper {
-    display: table-cell;
-    vertical-align: middle;
-  }
-  .modal-container {
-    width: 300px;
-    margin: 0px auto;
-    padding: 20px 30px;
-    background-color: #fff;
-    border-radius: 2px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-    transition: all .3s ease;
-    font-family: Helvetica, Arial, sans-serif;
-  }
-  .modal-header h3 {
-    margin-top: 0;
-    color: #42b983;
-  }
-  .modal-body {
-    margin: 20px 0;
-  }
-  .modal-default-button {
-    color: $white;
-    font-size: 20px;
-    text-align: center;
-    width: 100%;
-    background-color: #42b983;
-    border: none;
-    padding: 15px 0;
-    font-weight: 700;
-    margin-top: 15px;
-    &.danger {
-      background-color: #f74e4e;
-    }
-  }
+  };
 
   /*
    * The following styles are auto-applied to elements with

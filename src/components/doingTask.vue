@@ -1,18 +1,23 @@
 <template>
   <div
     @click="showModalDelete=true; $emit('is-modal-open', showModalDelete)"
-    class="waiting-task">
+    class="doing-task">
+    <deleteTaskModal
+      :task="task"
+      v-if="showModalDelete"
+      @close="showModalDelete=false; $emit('is-modal-open', showModalDelete)"
+      @delete-doing-task="deleteDoingTask"
+    ></deleteTaskModal>
+    <div class="dotted-container">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="task-name">{{task.name}}</div>
     <div class="task-dates">
-      <deleteTaskModal
-        :task="task"
-        v-if="showModalDelete"
-        @close="showModalDelete=false; $emit('is-modal-open', showModalDelete)"
-        @delete-doing-task="deleteDoingTask"
-      ></deleteTaskModal>
       <div class="final-date">{{task.plannedDate | moment("DD/MM/YYYY")}}</div>
       <div class="date-left">{{task.plannedDate | moment("from")}}</div>
     </div>
-    <div class="taskname">{{task.name}}</div>
   </div>
 </template>
 
@@ -40,3 +45,9 @@ export default {
   },
 };
 </script>
+
+<style lang="scss">
+.doing-task {
+  background: linear-gradient(90deg, rgba(185, 179, 247, 0.9) 0%, rgba(177, 244, 207, 0.9) 100%);;
+}
+</style>

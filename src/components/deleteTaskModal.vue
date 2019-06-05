@@ -5,7 +5,7 @@
         <div class="modal-container">
           <div class="modal-header">
             <slot name="header">
-              <h1>Abandonner l'objectif ?</h1>
+              <h1>Abandonner ?</h1>
               <p>Un malus vous sera infligé</p>
             </slot>
           </div>
@@ -22,8 +22,8 @@
                 @click.stop="$emit('delete-doing-task'); $emit('close')">
                 Supprimer
               </button>
-              <button class="modal-default-button" @click.stop="$emit('close')">
-                annuler
+              <button class="modal-default-button dissmiss" @click.stop="$emit('close')">
+                Annuler
               </button>
             </slot>
           </div>
@@ -39,51 +39,23 @@ export default {
 };
 </script>
 
-<style lang="scss">
-  .modal-mask {
-    position: fixed;
-    z-index: 4000;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0, 0, 0, .5);
-    display: table;
-    transition: opacity .3s ease;
-  }
-  .modal-wrapper {
-    display: table-cell;
-    vertical-align: middle;
-  }
-  .modal-container {
-    width: 300px;
-    margin: 0px auto;
-    padding: 20px 30px;
-    background-color: #fff;
-    border-radius: 2px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-    transition: all .3s ease;
-    font-family: Helvetica, Arial, sans-serif;
-  }
-  .modal-header h3 {
-    margin-top: 0;
-    color: #42b983;
-  }
-  .modal-body {
-    margin: 20px 0;
+<style scoped lang="scss">
+.modal-mask .modal-wrapper .modal-container {
+  p {
+    padding-top: 10px;
+    text-align: center;
   }
   .modal-default-button {
-    color: $white;
-    font-size: 20px;
-    text-align: center;
-    width: 100%;
-    background-color: #42b983;
-    border: none;
-    padding: 15px 0;
-    font-weight: 700;
-    margin-top: 15px;
     &.danger {
-      background-color: #f74e4e;
+      background-color: #ff4054;
+      border: 2px solid #ff6d80;
+    }
+    &.dissmiss {
+      margin-top: 0;
+      background-color: transparent;
+      color: #ff7777;
+      border: none;
     }
   }
+}
 </style>

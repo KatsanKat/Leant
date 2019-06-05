@@ -10,8 +10,8 @@
       </div>
     </header>
     <div id="nav">
-      <router-link to="/">Objectifs</router-link>
-      <router-link to="/about">Expérience</router-link>
+      <router-link class="task-link" to="/">Objectifs</router-link>
+      <router-link class="experience-link" to="/experience">Expérience</router-link>
     </div>
     <router-view/>
   </div>
@@ -56,9 +56,55 @@ export default {
   color: #2c3e50;
   margin-bottom: 50px;
 }
+.dg-backdrop, .dg-container {
+  z-index: 999999;
+}
+.dg-content-cont--floating {
+  top: 50%;
+  transform: translateY(-50%);
+}
+.dg-main-content {
+  width: 330px;
+  font-family: 'Gotham';
+  font-weight: 600;
+  .dg-content-body {
+    border-bottom: none;
+    text-align: center;
+    h1 {
+      font-size: 25px;
+      margin-bottom: 10px;
+    }
+  }
+  .dg-content-footer {
+    display: flex;
+    flex-flow: column-reverse;
+    button {
+      &.dg-btn--ok {
+        color: $white;
+        font-size: 20px;
+        text-align: center;
+        background-color: #87DEAE;
+        border: 2px solid #B1F4CF;
+        border-radius: 4px;
+        padding: 15px 20px;
+        font-weight: 700;
+        width: auto;
+        min-width: 200px;
+        margin-bottom: 10px;
+      }
+      &.dg-btn--cancel {
+        margin-top: 0;
+        background-color: transparent;
+        color: #ff7777;
+        border: none;
+      }
+    }
+  }
+}
 
 #header {
   background-color: $white;
+  position: relative;
   height: 69px;
   padding: 0 15px;
   box-shadow: 0px 1px 4px rgba(0, 0, 0, 0.17);
@@ -69,26 +115,27 @@ export default {
     justify-content: center;
     align-items: center;
     .logo {
-      max-width: 36px;
+      max-width: 40px;
       height: auto;
-      margin-left: 10px;
+      margin-right: 10px;
     }
     .name {
       font-weight: 700;
       color: $black;
-      font-size: 20px;
+      font-size: 22px;
     }
   }
 }
 
 #nav {
   position: fixed;
+  z-index: 3;
   bottom: 0;
   left: 0;
   display: flex;
   width: 100%;
-  border-top: 2px solid $second;
   background-color: $white;
+  box-shadow: 0px -1px 4px rgba(0, 0, 0, 0.17);
   a {
     text-align: center;
     padding-top: 15px;
@@ -97,12 +144,16 @@ export default {
     font-weight: 900;
     color: $black;
     text-decoration: none;
-    &:not(:last-child) {
-      border-right: 2px solid $second;
-    }
+    background-color: $white;
+    user-select: none;
     &.router-link-exact-active {
-      background-color: #42b983;
       color: $white;
+      &.task-link {
+        background-color: #42b983;
+      }
+      &.experience-link {
+        background-color: #9890E3;
+      }
     }
   }
 }

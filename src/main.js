@@ -13,7 +13,12 @@ import { leantStore } from './store/local';
 Vue.use(VueMoment, {
   moment,
 });
-Vue.use(VuejsDialog);
+Vue.use(VuejsDialog, {
+  html: true,
+  loader: false,
+  okText: 'Continuer',
+  cancelText: 'Annuler',
+});
 
 moment.updateLocale('fr', {
   relativeTime: {

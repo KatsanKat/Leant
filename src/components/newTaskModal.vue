@@ -13,22 +13,22 @@
           <div class="modal-body">
             <slot name="body">
               <div class="form-input">
-                <label for="name">Nom</label>
+                <label for="name">Ajouter un nouvel objectif</label>
                 <input
                   v-model="name"
                   id="name"
                   type="text"
                   name="name"
-                  placeholder="Refaire le monde...">
+                  placeholder="Mon objectif">
               </div>
               <div class="form-input">
-                <label for="datetime">Date</label>
+              <label for="datetime">A quelle date ?</label>
                 <datetime
                   v-model="datetime"
                   id="datetime"
                   type="datetime"
                   name="datetime"
-                  placeholder="Choisir une date"
+                  placeholder="JJ // MM // AAAA"
                 ></datetime>
               </div>
             </slot>
@@ -36,7 +36,7 @@
           <div class="modal-footer">
             <slot name="footer">
               <button class="modal-default-button" @click="$emit('close'); add();">
-                🎉 C'est parti ! 🎉
+                Commencer
               </button>
             </slot>
           </div>
@@ -83,19 +83,14 @@ export default {
 
 <style lang="scss">
   .form-input {margin-bottom: 25px;}
-  label {
-    width: 100%;
-    font-size: 13px;
-    color: $second;
-  }
   input[type="text"] {
     width: 100%;
     outline: none;
     border: none;
-    border-bottom: 1px solid $second;
+    border-bottom: 2px solid $black;
     transition: border-color .3s ease-out;
-    padding: 5px 0;
-    font-size: 15px;
+    padding: 9px 0;
+    font-size: 17px;
     &:focus {
       border-bottom-color: $black;
       transition: border-color .3s ease-in;
@@ -111,37 +106,50 @@ export default {
     background-color: rgba(0, 0, 0, .5);
     display: table;
     transition: opacity .3s ease;
-  }
-  .modal-wrapper {
-    display: table-cell;
-    vertical-align: middle;
-  }
-  .modal-container {
-    width: 300px;
-    margin: 0px auto;
-    padding: 20px 30px;
-    background-color: #fff;
-    border-radius: 2px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
-    transition: all .3s ease;
-    font-family: Helvetica, Arial, sans-serif;
-  }
-  .modal-header h3 {
-    margin-top: 0;
-    color: #42b983;
-  }
-  .modal-body {
-    margin: 20px 0;
-  }
-  .modal-default-button {
-    color: $white;
-    font-size: 20px;
-    text-align: center;
-    width: 100%;
-    background-color: #42b983;
-    border: none;
-    padding: 15px 0;
-    font-weight: 700;
+    .modal-wrapper {
+      display: table-cell;
+      vertical-align: middle;
+      .modal-container {
+        width: 330px;
+        margin: 0px auto;
+        padding: 20px 30px;
+        background-color: #fff;
+        border-radius: 4px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+        transition: all .3s ease;
+        font-family: Helvetica, Arial, sans-serif;
+        .modal-header h1 {
+          text-align: center;
+          font-size: 25px;
+          color: $black;
+          font-weight: 600;
+        }
+        .modal-body {
+          margin: 20px 0;
+          label {
+            width: 100%;
+            font-size: 16px;
+            font-weight: 600;
+            color: $black;
+          }
+        }
+        .modal-footer {
+          text-align: center;
+        }
+      .modal-default-button {
+        color: $white;
+        font-size: 20px;
+        text-align: center;
+        background-color: #87DEAE;
+        border: 2px solid #B1F4CF;
+        border-radius: 4px;
+        padding: 15px 20px;
+        font-weight: 700;
+        width: auto;
+        min-width: 200px;
+      }
+      }
+    }
   }
 
   /*

@@ -7,14 +7,14 @@
     ></newTaskModal>
     <div class="header-state-container">
       <div class="header-state">
-        <h2 class="title">Objectifs</h2>
+        <h2 class="title">Mes objectifs</h2>
         <button class="addTask" @click="showModalAdd = true">+</button>
       </div>
     </div>
     <div class="task-state-container">
-      <div class="task-state">
+      <div class="task-state todo-header">
         <div class="state-name">En attente</div>
-        <div class="element">{{waitingList.length}} éléments</div>
+        <div class="element">{{waitingList.length}} objectif(s)</div>
       </div>
       <draggable
         :move="confirmTask"
@@ -42,9 +42,9 @@
       </draggable>
     </div>
     <div class="task-state-container">
-      <div class="task-state">
+      <div class="task-state doing-header">
         <div class="state-name">En cours</div>
-        <div class="element">{{doingList.length}} éléments</div>
+        <div class="element">{{doingList.length}} objectif(s)</div>
       </div>
       <draggable
         :move="finishTask"
@@ -72,9 +72,9 @@
       </draggable>
     </div>
     <div class="task-state-container">
-      <div class="task-state">
-        <div class="state-name">Terminée</div>
-        <div class="element">{{doneList.length}} éléments</div>
+      <div class="task-state done-header">
+        <div class="state-name">Terminé</div>
+        <div class="element">{{doneList.length}} objectif(s)</div>
       </div>
       <draggable
         class="content-state-container"
@@ -88,12 +88,20 @@
           class="list-group"
           type="transition"
           :name="!drag ? 'flip-list' : null">
-          <div v-for="task in doneList" :key="task.id" class="task">
+          <div v-for="task in doneList" :key="task.id" class="task done-task">
+            <div class="dotted-container">
+              <span></span>
+              <span></span>
+              <span></span>
+            </div>
+            <div class="task-name">{{task.name}}</div>
             <div class="task-dates">
               <div class="final-date">{{task.plannedDate | moment("DD/MM/YYYY")}}</div>
-              <div class="date-left"><span class="green">Terminé !</span></div>
+              <div class="date-left green">
+                  Terminé le {{task.completionDate | moment("Do MMMM YYYY")}}
+                  à {{task.completionDate | moment("HH:mm")}}
+              </div>
             </div>
-            <div class="taskname">{{task.name}}</div>
           </div>
         </transition-group>
       </draggable>
@@ -128,8 +136,8 @@ export default {
       showModalAdd: false,
       isModalOpen: false,
       drag: false,
-      confirmTaskMessage: 'Une fois cet objectif en cours il sera impossible de le modifier, prêt à relever le défi ?',
-      finishTaskMessage: 'Objectif terminé ?',
+      confirmTaskMessage: '<h1>Attention</h1> Une fois cet objectif en cours il sera impossible de le modifier<br/><br/>prêt à relever le défi ?',
+      finishTaskMessage: '<h1>Objectif terminé ?</h1>',
     };
   },
   methods: {
@@ -247,11 +255,14 @@ export default {
       color: #000;
     }
     .addTask {
-      background-color: $green;
+      background-color: #87DEAE;
+      border: 2px solid #B1F4CF;
       color: $white;
-      line-height: 1;
-      font-size: 20px;
-      border: none;
+      line-height: 25px;
+      font-size: 25px;
+      height: 35px;
+      flex-basis: 35px;
+      flex-shrink: 1;
       border-radius: 3px;
       font-weight: 700;
       outline: none;
@@ -260,28 +271,79 @@ export default {
 }
 .task-state {
   padding: 0 15px;
-  background-color: $main;
   height: 50px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  color: $white;
+  font-weight: 600;
+  &.todo-header {
+    background: #9890E3;
+  }
+  &.doing-header {
+    background: linear-gradient(90deg, #9890E3 0%, #8ce6b4 100%);
+  }
+  &.done-header {
+    background: #6ED19A;
+  }
+  .element {
+    font-style: italic;
+    font-size: 13px
+  }
 }
+
 .task {
   height: 65px;
-  padding: 14px 15px;
-  background-color: $white;
+  padding: 14px 15px 14px 30px;
+  position: relative;
+  &:not(:last-child) {
+    padding-bottom: 15px;
+    border-bottom: 1px solid #9890E3;
+  }
+  .dotted-container {
+    position: absolute;
+    display: flex;
+    flex-flow: column nowrap;
+    top: 50%;
+    left: 15px;
+    transform: translateY(-50%);
+    span {
+      display: block;
+      width: 4px;
+      height: 4px;
+      border-radius: 100%;
+      background-color: #9890E3;
+      &:not(:last-child) {
+        margin-bottom: 6px;
+      }
+    }
+  }
+  .task-name {
+    margin-bottom: 8px;
+    color: $black;
+    font-weight: 600;
+  }
   .task-dates {
     display: flex;
     justify-content: space-between;
     align-items: center;
     font-size: 12px;
-    margin-bottom: 8px;
+    font-weight: 600;
+    color: $black;
     .green {
       color: #42b983;
       font-weight: 700;
     }
   }
 }
+
+.done-task {
+  background: #B1F4CF;
+  .dotted-container span {
+    background-color: #51A76E;
+  }
+}
+
 .list-group {
   display: block;
   min-height: 30px;
