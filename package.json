@@ -19,6 +19,7 @@
     "vue-class-component": "^6.0.0",
     "vue-datetime": "^1.0.0-beta.10",
     "vue-moment": "^4.0.0",
+    "vue-progress-path": "0.0.2",
     "vue-property-decorator": "^8.0.0",
     "vue-router": "^3.0.1",
     "vuedraggable": "^2.20.0",

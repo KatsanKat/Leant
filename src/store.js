@@ -33,9 +33,13 @@ export default new Vuex.Store({
     },
     SET_EXPERIENCE(state, experience) {
       state.experience = experience;
+      console.log('mutation', state.experience);
     },
-    UPDATE_EXPERIENCE(state, { experience }) {
+    UPDATE_EXPERIENCE(state, experience) {
+      console.log('mutation before update', state);
+      console.log('mutation before update value', experience);
       state.experience = experience;
+      console.log('mutation update', state.experience);
     },
     SET_NEW_USER(state, { isNew }) {
       state.new_user = isNew;
@@ -62,9 +66,11 @@ export default new Vuex.Store({
       commit('SET_EXPERIENCE', experience);
       leantStore.setItem('stored_xp', experience);
     },
-    updateExperience({ commit }, experience) {
+    updateExperience({ commit, state }, experience) {
+      console.log('update', experience);
+      console.log('update state', state.experience);
       commit('UPDATE_EXPERIENCE', experience);
-      leantStore.setItem('stored_xp', experience);
+      leantStore.setItem('stored_xp', state.experience);
     },
     setNewUser({ commit }, isNew) {
       commit('SET_NEW_USER', isNew);
@@ -75,5 +81,6 @@ export default new Vuex.Store({
     getTasks: state => state.tasks,
     getTaskById: state => id => state.tasks.find(task => task.id === id),
     getTasksByStatus: state => status => state.tasks.filter(task => task.state === status),
+    experience: state => state.experience,
   },
 });

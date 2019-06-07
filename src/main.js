@@ -1,6 +1,8 @@
 import Vue from 'vue';
 import VuejsDialog from 'vuejs-dialog';
 import 'vuejs-dialog/dist/vuejs-dialog.min.css';
+import 'vue-progress-path/dist/vue-progress-path.css';
+import VueProgress from 'vue-progress-path';
 import moment from 'moment';
 import VueMoment from 'vue-moment';
 import Experience from './model/Experience';
@@ -19,6 +21,7 @@ Vue.use(VuejsDialog, {
   okText: 'Continuer',
   cancelText: 'Annuler',
 });
+Vue.use(VueProgress);
 
 moment.updateLocale('fr', {
   relativeTime: {
@@ -59,7 +62,7 @@ leantStore.getItem('new_user').then((user) => {
   if (user === null) {
     store.dispatch('setNewUser', true);
   } else {
-    console.log('not new', user);
+    // console.log('not new', user);
     store.dispatch('setNewUser', false);
   }
 });

@@ -116,6 +116,7 @@ import newTaskModal from '@/components/newTaskModal.vue';
 import waitingTask from '@/components/waitingTask.vue';
 import doingTask from '@/components/doingTask.vue';
 import moment from 'moment';
+import { mapGetters, mapActions } from 'vuex';
 
 export default {
   name: 'Tasks',
@@ -127,12 +128,11 @@ export default {
     doingTask,
   },
   data() {
-    const { tasks, experience } = this.$store.state;
+    const { tasks } = this.$store.state;
     return {
       waitingList: tasks.filter(task => task.state === STATE_TASK.TODO),
       doingList: tasks.filter(task => task.state === STATE_TASK.DOING),
       doneList: tasks.filter(task => task.state === STATE_TASK.DONE),
-      xp: experience,
       showModalAdd: false,
       isModalOpen: false,
       drag: false,
@@ -140,7 +140,19 @@ export default {
       finishTaskMessage: '<h1>Objectif terminé ?</h1>',
     };
   },
+  computed: {
+    ...mapGetters(['experience']),
+    dragOptions() {
+      return {
+        animation: 200,
+        group: 'description',
+        disabled: false,
+        ghostClass: 'ghost',
+      };
+    },
+  },
   methods: {
+    ...mapActions(['updateExperience']),
     changeModalOpen(bool) {
       this.isModalOpen = bool;
     },
@@ -163,8 +175,9 @@ export default {
           this.doingList.splice(index, 1);
         }
       });
-      this.xp.number -= 50;
-      this.$store.dispatch('updateExperience', this.xp);
+      let removeExperience = this.experience;
+      removeExperience.number -= 50;
+      this.updateExperience(removeExperience);
     },
     confirmTask(evt) {
       if (evt.relatedContext.list === this.doingList) {
@@ -201,8 +214,9 @@ export default {
           const taskDone = taskDragged;
           taskDone.state = STATE_TASK.DONE;
           taskDone.completionDate = moment().format();
-          this.xp.number += 100;
-          this.$store.dispatch('updateExperience', this.xp);
+          let addExperience = this.experience;
+          addExperience.number += 100;
+          this.updateExperience(addExperience);
           this.$store.dispatch('updateTask', taskDragged, taskDone.id);
         })
         .catch((err) => {
@@ -215,25 +229,6 @@ export default {
           this.doingList.push(taskDragged);
         });
     },
-  },
-  computed: {
-    dragOptions() {
-      return {
-        animation: 200,
-        group: 'description',
-        disabled: false,
-        ghostClass: 'ghost',
-      };
-    },
-    // waitingList:{
-    //   get() {
-    //         return this.allTasks.filter((task) => task.state === STATE_TASK.TODO)
-    //     },
-    //   set(tasks) {
-    //     console.log(tasks);
-    //       // this.$store.commit('updateList', task)
-    //   }
-    // }
   },
 };
 </script>
@@ -334,6 +329,27 @@ export default {
       color: #42b983;
       font-weight: 700;
     }
+  }
+}
+
+.vdatetime-popup {
+  font-family: 'Gotham';
+  font-weight: 700;
+  border-radius: 4px;
+
+  .vdatetime-popup__header {
+    border-radius: 4px 4px 0 0;
+    background-color: #9890E3;
+  }
+
+  .vdatetime-calendar__month__day--selected > span > span,
+  .vdatetime-calendar__month__day--selected:hover > span > span {
+    background-color: #9890E3;
+  }
+
+  .vdatetime-popup__actions__button,
+  .vdatetime-time-picker__item--selected {
+    color: #9890E3;
   }
 }
 

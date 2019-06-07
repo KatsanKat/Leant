@@ -89,10 +89,6 @@ export default {
       .VueCarousel {
         margin-bottom: 20px;
       }
-      .VueCarousel-wrapper {
-        border: 5px solid $black;
-        border-radius: 5px;
-      }
       .VueCarousel-slide {
         height: 30vh;
       }

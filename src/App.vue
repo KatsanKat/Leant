@@ -18,7 +18,7 @@
 </template>
 
 <script lang="js">
-import { mapActions } from 'vuex';
+import { mapActions, mapMutations } from 'vuex';
 import onboard from '@/components/onboard.vue';
 
 export default {
@@ -31,15 +31,15 @@ export default {
       showOnboard: new_user, /* new_user */
     };
   },
-  created() {
-    console.log(this.$store.state.new_user);
-  },
   methods: {
     setNewUserFalse() {
       this.showOnboard = false;
       this.$store.dispatch('setNewUser', false);
     },
-    ...mapActions(['setTasks']),
+    ...mapActions(['setTasks', 'setExperience', 'setNewUser']),
+  },
+  created() {
+    // console.log(this.$store.state.new_user);
   },
 };
 </script>
